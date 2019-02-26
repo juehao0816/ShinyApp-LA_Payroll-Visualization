@@ -10,7 +10,7 @@ LAtotpayroll <- LApayroll %>%
             Overtime = sum(`Overtime Pay`, na.rm = TRUE),
             Other = sum(`Other Pay (Payroll Explorer)`, na.rm = TRUE),
             Total = sum(Base, Overtime, Other)) %>%
-  gather('Base', 'Overtime', 'Other', key = "Payment Type", value = "Amount")
+  gather('Base', 'Overtime', 'Other', key = "Type", value = "Amount")
 write_rds(LAtotpayroll, "LAtotpayroll.rds")
 
 #Q2#
@@ -48,6 +48,17 @@ LAcostpayroll <- LApayroll %>%
             TotalCost = sum(`Average Benefit Cost`)) %>%
   arrange(`Year`, desc(TotalCost))
 write_rds(LAcostpayroll, "LAcostpayroll.rds")
+
+#Q5#
+#LA city employee projected annual salary 
+LAdepsalary <- LApayroll %>%
+  group_by(`Year`, `Job Class Title`) %>%
+  select(`Year`, `Department Title`, `Job Class Title`,
+         `Projected Annual Salary`) %>%
+  arrange(`Year`, desc(`Projected Annual Salary`))
+write_rds(LAdepsalary, "LAempsalary.rds")
+
+
 
 
             
