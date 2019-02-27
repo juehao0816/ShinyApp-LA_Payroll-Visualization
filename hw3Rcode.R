@@ -52,7 +52,7 @@ write_rds(LAcostpayroll, "LAcostpayroll.rds")
 #Q5#
 #LA city employee projected annual salary 
 LAdepsalary <- LApayroll %>%
-  group_by(`Year`, `Job Class Title`) %>%
+  group_by(`Year`) %>%
   select(`Year`, `Department Title`, `Job Class Title`,
          `Projected Annual Salary`) %>%
   arrange(`Year`, desc(`Projected Annual Salary`))
