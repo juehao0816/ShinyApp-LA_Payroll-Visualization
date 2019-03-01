@@ -46,7 +46,9 @@ con = dbConnect(RSQLite::SQLite(), "/home/m280data/la_parking/LA_Parking_Citatio
 #Name of the table in database is latix#
 dbListTables(con)
 #Use dplyr package
-latix_sql <-dplyr::tbl(con, "latix")
+latix_sql <- dplyr::tbl(con, "latix")
+#Check all variables in the table#
+latix_sql %>% print(width = Inf)
 ```
 
 1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?
@@ -112,14 +114,49 @@ latix_sql %>% filter(!is.na(Issue_Month)) %>% group_by(Issue_Month) %>%
 
 ** You are most likely to get a ticket in August, and least likely to get a ticket in Feburary**
 
-0. Which car makes received most citations?
+3. Which car makes received most citations?
+
+```{r}
+latix_sql %>% filter(!is.na(Make)) %>% group_by(Make) %>% 
+  summarize(number = n()) %>% arrange(desc(number)) %>% collect() %>% 
+  slice(1)
+```
+
+** Toyota received the most citation **
 
 
-0. How many different colors of cars were ticketed? Which color attracted most tickets?
+4. How many different colors of cars were ticketed? Which color attracted most tickets?
 
-0. What are the most common ticket types?
+```{r}
+Carcol <- latix_sql %>% filter(!is.na(Color)) %>% group_by(Color) %>%
+  summarize(number = n()) %>% arrange(desc(number))
+summarise(Carcol, n())
+head(Carcol, 1)
+```
 
-0. How much money was collected on parking tickets in 2016, 2017 and 2018?
+** There are 103 different colors of cars, Black attracted the most tickets **
+
+5. What are the most common ticket types?
+
+```{r}
+latix_sql %>% filter(!is.na(Violation_Description)) %>% 
+  group_by(Violation_Description) %>% summarize(number = n()) %>% 
+  arrange(desc(number)) %>% collect() %>% 
+  slice(1)
+```
+
+** The most common ticket type is "No park/Street clean" **
+
+6. How much money was collected on parking tickets in 2016, 2017 and 2018?
+
+```{r}
+latix_sql %>% filter(!is.na(Issue_Year), !is.na(Fine_amount)) %>% 
+  group_by(Issue_Year) %>% summarise(Tot = sum(Fine_amount, na.rm = TRUE)) %>% 
+  collect() %>% slice(c(2,3,4))
+```
+
+** Money collected on parking tickets in 2016, 2017 and 2018 are **
+** $152145538, $157122489, $138875787 respectively **
 
 0. If you've been ticketed in LA County, did you find your ticket in this data set?
 
