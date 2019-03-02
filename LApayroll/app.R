@@ -7,6 +7,7 @@ LAtotpayroll <- readRDS("LAtotpayroll.rds")
 LAEarnmost <- readRDS("LAEarnmost.rds")
 LAEarnDepMean <- readRDS("LAEarnDepMean.rds")
 LAEarnDepMed <- readRDS("LAEarnDepMed.rds")
+LAcostpayroll <- readRDS("LAcostpayroll.rds")
 LAempsalary <- readRDS("LAempsalary.rds")
 
 
